@@ -1,0 +1,13 @@
+[manager]
+ratio = [1, 3, 4]
+sort_by = "natural"
+sort_sensitive = false
+sort_reverse = false
+sort_dir_first = true
+show_hidden = false
+show_symlink = true
+
+[preview]
+# tmux does not forward graphics escape sequences — disable image rendering
+# to prevent WezTerm's XTVERSION response from leaking as raw text on yazi startup
+image_protocol = "disabled"

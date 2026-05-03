@@ -1,0 +1,72 @@
+{
+    "$schema": "https://aka.ms/terminal-profiles-schema",
+    "defaultProfile": "{2c4de342-38b7-51cf-b940-2309a097f518}",
+    "copyOnSelect": false,
+    "copyFormatting": false,
+
+    "profiles": {
+        "defaults": {
+            "font": {
+                "face": "Hack Nerd Font Mono",
+                "size": 13
+            },
+            "colorScheme": "Catppuccin Mocha",
+            "padding": "6",
+            "scrollbarState": "hidden",
+            "bellStyle": "none",
+            "antialiasingMode": "cleartype"
+        },
+        "list": [
+            {
+                "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
+                "name": "WSL2",
+                "commandline": "wsl.exe -- env WIN365=1 zsh -l",
+                "startingDirectory": "~",
+                "hidden": false
+            },
+            {
+                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+                "name": "Windows PowerShell",
+                "commandline": "powershell.exe",
+                "hidden": false
+            },
+            {
+                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+                "name": "Command Prompt",
+                "commandline": "cmd.exe",
+                "hidden": false
+            }
+        ]
+    },
+
+    "schemes": [
+        {
+            "name": "Catppuccin Mocha",
+            "background": "#1E1E2E",
+            "foreground": "#CDD6F4",
+            "cursorColor": "#F5E0DC",
+            "selectionBackground": "#585B70",
+            "black": "#45475A",
+            "red": "#F38BA8",
+            "green": "#A6E3A1",
+            "yellow": "#F9E2AF",
+            "blue": "#89B4FA",
+            "purple": "#F5C2E7",
+            "cyan": "#94E2D5",
+            "white": "#BAC2DE",
+            "brightBlack": "#585B70",
+            "brightRed": "#F38BA8",
+            "brightGreen": "#A6E3A1",
+            "brightYellow": "#F9E2AF",
+            "brightBlue": "#89B4FA",
+            "brightPurple": "#F5C2E7",
+            "brightCyan": "#94E2D5",
+            "brightWhite": "#A6ADC8"
+        }
+    ],
+
+    "keybindings": [
+        { "command": { "action": "copy", "singleLine": false }, "keys": "ctrl+shift+c" },
+        { "command": "paste", "keys": "ctrl+shift+v" }
+    ]
+}

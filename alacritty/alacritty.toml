@@ -1,0 +1,31 @@
+[general]
+import = ["theme.toml"]
+
+[terminal.shell]
+program = "wsl.exe"
+args = ["--", "zsh", "-l"]
+
+[env]
+ALACRITTY_USE_OMZ = "1"
+WSLENV = "ALACRITTY_USE_OMZ/u"
+
+[font]
+normal = { family = "Hack Nerd Font Mono", style = "Regular" }
+size = 13.0
+
+[window]
+opacity = 0.94
+decorations = "full"
+decorations_theme_variant = "None"
+padding = { x = 6, y = 6 }
+dimensions = { columns = 100, lines = 30 }
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"
+action = "Paste"
