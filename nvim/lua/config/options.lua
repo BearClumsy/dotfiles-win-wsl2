@@ -3,28 +3,5 @@
 -- Add any additional options here
 vim.opt.showtabline = 2
 vim.opt.termguicolors = true
-
-
--- Set background and colorscheme based on current Windows theme
-local f = io.open(vim.fn.expand("~/.cache/current-theme"), "r")
-if f then
-  local theme = f:read("*l")
-  f:close()
-  if theme == "light" then
-    vim.opt.background = "light"
-    vim.api.nvim_create_autocmd("VimEnter", {
-      once = true,
-      callback = function()
-        vim.cmd("colorscheme catppuccin-latte")
-      end,
-    })
-  else
-    vim.opt.background = "dark"
-    vim.api.nvim_create_autocmd("VimEnter", {
-      once = true,
-      callback = function()
-        vim.cmd("colorscheme catppuccin-mocha")
-      end,
-    })
-  end
-end
+vim.opt.pumblend = 0  -- disable popup menu blend so catppuccin uses transparent Pmenu
+vim.opt.winblend = 0  -- disable float window blend

@@ -1,8 +1,10 @@
 return {
+  -- Configure LazyVim colorscheme with auto theme switching
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = vim.fn.filereadable(vim.fn.expand("~/.cache/win365")) == 1 and "catppuccin-mocha" or "catppuccin",
+      -- Set default colorscheme - this will be overridden by auto-switching
+      colorscheme = "catppuccin",
     },
   },
 
@@ -12,19 +14,26 @@ return {
     name = "catppuccin",
     lazy = false,
     priority = 1000,
+    init = function()
+      require("config.auto-theme").init()
+    end,
     opts = {
       flavour = "mocha",
-      transparent_background = vim.fn.filereadable(vim.fn.expand("~/.cache/win365")) == 0,
-      background = {
-        light = "latte",
-        dark = "mocha",
+      transparent_background = true,
+      float = {
+        transparent = true,
       },
       integrations = {
         bufferline = true,
         cmp = true,
         gitsigns = true,
         nvimtree = true,
+        neotree = true,
         treesitter = true,
+        snacks = {
+          enabled = true,
+          indent_scope_color = "",
+        },
         notify = false,
         mini = {
           enabled = true,
@@ -64,31 +73,5 @@ return {
     },
   },
 
-  -- Auto theme switching (disabled on Windows 365)
-  {
-    "f-person/auto-dark-mode.nvim",
-    cond = vim.fn.filereadable(vim.fn.expand("~/.cache/win365")) == 0,
-    lazy = false,
-    priority = 1000,
-    opts = {
-      update_interval = 1000,
-      get_auto_dark_mode = function()
-        local f = io.open(vim.fn.expand("~/.cache/current-theme"), "r")
-        if f then
-          local theme = f:read("*l")
-          f:close()
-          return theme ~= "light"
-        end
-        return true
-      end,
-      set_dark_mode = function()
-        vim.api.nvim_set_option_value("background", "dark", {})
-        vim.cmd("colorscheme catppuccin-mocha")
-      end,
-      set_light_mode = function()
-        vim.api.nvim_set_option_value("background", "light", {})
-        vim.cmd("colorscheme catppuccin-latte")
-      end,
-    },
-  },
+  { "f-person/auto-dark-mode.nvim", enabled = false },
 }

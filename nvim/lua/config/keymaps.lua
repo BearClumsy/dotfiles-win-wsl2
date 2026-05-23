@@ -6,15 +6,20 @@
 vim.keymap.set("n", "<C-e>", "j<C-e>", { desc = "Scroll down without moving cursor" })
 vim.keymap.set("n", "<C-y>", "k<C-y>", { desc = "Scroll up without moving cursor" })
 
--- Manual theme toggle keymap
-vim.keymap.set("n", "<leader>ut", function()
-  if vim.o.background == "dark" then
-    vim.api.nvim_set_option_value("background", "light", {})
-    vim.cmd("colorscheme catppuccin-latte")
-    vim.notify("Switched to light theme (Catppuccin Latte)", vim.log.levels.INFO)
-  else
-    vim.api.nvim_set_option_value("background", "dark", {})
-    vim.cmd("colorscheme catppuccin-mocha")
-    vim.notify("Switched to dark theme (Catppuccin Mocha)", vim.log.levels.INFO)
-  end
-end, { desc = "Toggle theme (dark/light)" })
+-- Send delete/change to black hole register (don't pollute clipboard)
+vim.keymap.set({ "n", "v" }, "d", '"_d', { desc = "Delete to black hole" })
+vim.keymap.set({ "n", "v" }, "D", '"_D', { desc = "Delete to end to black hole" })
+vim.keymap.set({ "n", "v" }, "c", '"_c', { desc = "Change to black hole" })
+vim.keymap.set({ "n", "v" }, "C", '"_C', { desc = "Change to end to black hole" })
+vim.keymap.set({ "n", "v" }, "x", '"_x', { desc = "Delete char to black hole" })
+
+Snacks.toggle({
+  name = "Auto Theme",
+  get = function()
+    return vim.fn.filereadable(vim.fn.stdpath("data") .. "/auto-theme-disabled") == 0
+  end,
+  set = function(state)
+    local t = require("config.auto-theme")
+    if state then t.start() else t.stop() end
+  end,
+}):map("<leader>um")
