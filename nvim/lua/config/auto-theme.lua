@@ -28,39 +28,16 @@ local function apply_transparency()
   end
 end
 
-local function is_wsl()
-  local f = io.open("/proc/version", "r")
-  if not f then return false end
-  local content = f:read("*a")
-  f:close()
-  return content:lower():find("microsoft") ~= nil or content:lower():find("wsl") ~= nil
-end
-
-local function apply_appearance(appearance)
-  if appearance == current then return end
-  current = appearance
-  vim.schedule(function()
-    vim.o.background = appearance == "dark" and "dark" or "light"
-    vim.cmd("colorscheme " .. (appearance == "dark" and "catppuccin-mocha" or "catppuccin-latte"))
-  end)
-end
-
 local function check()
-  if vim.loop.os_uname().sysname == "Darwin" then
-    vim.system({ "defaults", "read", "-g", "AppleInterfaceStyle" }, { text = true }, function(out)
-      apply_appearance(out.stdout == "Dark\n" and "dark" or "light")
+  vim.system({ "defaults", "read", "-g", "AppleInterfaceStyle" }, { text = true }, function(out)
+    local appearance = out.stdout == "Dark\n" and "dark" or "light"
+    if appearance == current then return end
+    current = appearance
+    vim.schedule(function()
+      vim.o.background = appearance == "dark" and "dark" or "light"
+      vim.cmd("colorscheme " .. (appearance == "dark" and "catppuccin-mocha" or "catppuccin-latte"))
     end)
-  elseif is_wsl() then
-    vim.system(
-      { "reg.exe", "query", "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "/v", "AppsUseLightTheme" },
-      { text = true },
-      function(out)
-        -- 0x0 = dark, 0x1 = light
-        local appearance = (out.stdout and out.stdout:find("0x1")) and "light" or "dark"
-        apply_appearance(appearance)
-      end
-    )
-  end
+  end)
 end
 
 local marker = vim.fn.stdpath("data") .. "/auto-theme-disabled"
