@@ -140,7 +140,26 @@ else
   echo "lazydocker already installed, skipping."
 fi
 
-# --- 9. Install thefuck ---
+# --- 9. Install git-delta ---
+if ! command -v delta &>/dev/null; then
+  echo "Installing git-delta..."
+  ARCH=$(uname -m)
+  case "$ARCH" in
+    aarch64) DELTA_ARCH="aarch64-unknown-linux-musl" ;;
+    *)       DELTA_ARCH="x86_64-unknown-linux-musl" ;;
+  esac
+  DELTA_VERSION=$(curl -s "https://api.github.com/repos/dandavison/delta/releases/latest" \
+    | grep -Po '"tag_name": "\K[^"]*')
+  curl -Lo /tmp/delta.tar.gz \
+    "https://github.com/dandavison/delta/releases/latest/download/delta-${DELTA_VERSION}-${DELTA_ARCH}.tar.gz"
+  tar xf /tmp/delta.tar.gz -C /tmp
+  sudo install /tmp/delta-${DELTA_VERSION}-${DELTA_ARCH}/delta /usr/local/bin
+  rm -rf /tmp/delta.tar.gz "/tmp/delta-${DELTA_VERSION}-${DELTA_ARCH}"
+else
+  echo "git-delta already installed, skipping."
+fi
+
+# --- 10. Install thefuck ---
 if ! command -v thefuck &>/dev/null; then
   echo "Installing thefuck..."
   sudo apt-get install -y pipx python3-setuptools
