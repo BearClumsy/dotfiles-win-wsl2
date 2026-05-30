@@ -28,16 +28,24 @@ local function apply_transparency()
   end
 end
 
-local function check()
-  vim.system({ "defaults", "read", "-g", "AppleInterfaceStyle" }, { text = true }, function(out)
-    local appearance = out.stdout == "Dark\n" and "dark" or "light"
-    if appearance == current then return end
-    current = appearance
-    vim.schedule(function()
-      vim.o.background = appearance == "dark" and "dark" or "light"
-      vim.cmd("colorscheme " .. (appearance == "dark" and "catppuccin-mocha" or "catppuccin-latte"))
-    end)
+local function apply_appearance(appearance)
+  if appearance == current then return end
+  current = appearance
+  vim.schedule(function()
+    vim.o.background = appearance == "dark" and "dark" or "light"
+    vim.cmd("colorscheme " .. (appearance == "dark" and "catppuccin-mocha" or "catppuccin-latte"))
   end)
+end
+
+local function check()
+  vim.system(
+    { "reg.exe", "query", "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "/v", "AppsUseLightTheme" },
+    { text = true },
+    function(out)
+      local appearance = (out.stdout and out.stdout:find("0x1")) and "light" or "dark"
+      apply_appearance(appearance)
+    end
+  )
 end
 
 local marker = vim.fn.stdpath("data") .. "/auto-theme-disabled"
